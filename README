@@ -1,0 +1,11 @@
+Kompilacja:
+make
+
+Uruchomienie:
+Serwer: ./serwer
+Klient: ./klient
+
+Pliki:
+inf141335_k.c - kod źródłowy klienta, opisuje jak przesyłane są informacje podawane przez użytkownika do kolejki komunikatów później obsługiwanej przez serwer, a następnie od niego odbierane.
+inf141335_s.c - kod źródłowy serwera, tworzenie grup i użytkowników, mechanizm wysyłania wiadomości prywatnych, działania na grupach i użytkownikach na podstawie poleceń dostarczanych przez poszczególnych użytkowników.
+configuration.txt - plik konfiguracyjny na którego podstawie tworzone są 3 grupy i 9 użytkowników. Moze byc zmieniany, ale by zostal poprawnie wczytany musi pozostac ilosc uzytkownikow (nastepni nie zostana wczytani) i konczyc sie znakiem nowej lini).

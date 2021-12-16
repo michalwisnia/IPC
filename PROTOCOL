@@ -1,0 +1,37 @@
+Klient oraz serwer komunikują się za pomocą jednej kolejki komunikatów, przesyłają między sobą strukturę message. Serwer poza zawartością wiadomości otrzymuje Pid procesu z którego została wiadomość, czyli nadawcy. Jest on typem wiadomości zwrotnej do procesu nadawcy. Typ wiadomości do serwera to 2.
+Wiadomosc wysylana jest po wpisaniu poprawnej komendy oraz poprawne uzupelnienie jej o ewentualne dodatkowe informacje. Klient dostaje wiadomosc zwrotną czy polecenie się powiodło, bądź nie i dlaczego.
+
+W serwerze przebiega wymiana wiadomosci między użytkownikami, za pomocą unikalnych kolejek komunikatow kazdego z nich, poprzez wysłanie struktury pm.
+Jedna komenda służy do wysyłania wiadomości do jednego użytkownika, bądź grupy użytkowników, należy podać poprawnie nazwę, w przypadku wiadomości do grupy każdy z użytkowników otrzyma wiadomość otrzyma wiadomość na swoją kolejkę, tak by każdy mógł odebrać wiadomość.
+
+
+struct message - struktura wiadomości przesyłanej między serwerem oraz klientem:
+{
+	long type; - typ (1 - klient do serwera, 2 - serwer do klienta)
+    char command[64]; (komenda określająca polecenie)
+	char text[1024]; (zawartość wiadomości, określająca czego dotyczy konkretne polecenie)
+    char username[64]; (nazwa użytkownika wysyłającego wiadomość)
+    int success; (zmienna okreslająca czy żądanie sie powiodło)
+    char receiver[64]; (przy wiadomościach prywatnych - nazwa odbiorcy)
+	int pid; - pid, informacja dla serwera.
+}; 
+struct pm - struktura wiadomosci prywatnych, oblugiwane przez serwer
+{
+    long type; - typ(każdy użytkownik ma swój unikalny typ)
+    char text[1024]; - tekst wiadomosci prywatnej
+    char sender[64]; - nazwa nadawcy
+    char receiver[64]; - nazwa odbiorcy
+};
+struct user -sturktura użytkownika, których dane zapisywane są w pamięci serwera
+{   
+    int logstatus; -zmienna okreslajaca czy uzytkownik jest zalogowany(=1)
+    char username[64]; -nazwa uzytkownika
+    int memberstatus; -zmienna okreslajaca czy uzytkownik jest czlonkiem grupy(=1)
+    int userID; -id uzytkownika
+    int mq; -kolejka komunikatow uzytkownika
+};
+struct group -sturktura grupy, których dane zapisywane są w pamięci serwera
+{
+    char name[64]; - nazwa grupy
+    struct user users[9]; - uzytkownicy grupy
+};
